@@ -16,7 +16,7 @@ namespace GraphicFilters.ViewModels
         private BitmapSource sourceImage;
         private Bitmap imgBitmap;
 
-        public ThresholdDialogViewModel(ref BitmapSource SourceImage, ref Bitmap ImgBitmap)
+        public ThresholdDialogViewModel(ref BitmapSource SourceImage, ref Bitmap ImgBitmap, Action<String>Changed)
         {
             sourceImage = SourceImage;
             imgBitmap = ImgBitmap;

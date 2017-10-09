@@ -59,10 +59,10 @@ namespace GraphicFilters.ViewModels
         {
             var thresholdDialog = new ThresholdDialog()
             {
-                DataContext = new ThresholdDialogViewModel(ref sourceImage, ref imgBitmap),
+                DataContext = new ThresholdDialogViewModel(ref sourceImage, ref imgBitmap, OnPropertyChanged),
                 Owner = App.Current.MainWindow
             };
-            thresholdDialog.ShowDialog();
+            thresholdDialog.Show();
         }
         private bool CanThresholdExecute()
         {

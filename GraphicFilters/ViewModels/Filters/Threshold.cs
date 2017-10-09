@@ -78,7 +78,6 @@ namespace GraphicFilters.ViewModels.Filters
                     }
                 }
             }
-            outImg.Save("..\\..\\out.jpeg");
             return outImg;
         }
     }
