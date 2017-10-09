@@ -1,9 +1,9 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Drawing;
 
 namespace GraphicFilters.ViewModels.Services.Interfaces
 {
     public interface IFileService
     {
-        BitmapImage OpenImage();
+        Bitmap OpenImage();
     }
 }

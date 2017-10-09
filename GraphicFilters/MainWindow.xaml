@@ -8,19 +8,19 @@
         Title="MainWindow" Height="600" Width="800"
         xmlns:viewmodel="clr-namespace:GraphicFilters.ViewModels">
     <Window.DataContext>
-        <viewmodel:ManWindowViewModel/>
+        <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
-    <DockPanel LastChildFill="False">
-        <Menu x:Name="fileMenu" DockPanel.Dock="Top" FontSize="12">
+    <Grid Background="Black">
+        <Menu x:Name="fileMenu" VerticalAlignment="Top" FontSize="12">
             <MenuItem Header="File">
-                <MenuItem Header="Open" Command="{Binding OpenCommand}"/>
+                <MenuItem x:Name="openFile" Header="Open Image" Command="{Binding OpenImageCommand}"/>
                 <Separator/>
                 <MenuItem x:Name="exitBtn" Header="Exit"/>
             </MenuItem>
             <MenuItem Header="Filters">
-                <MenuItem x:Name="tresholdBtn" Header="Treshold"/>
+                <MenuItem x:Name="tresholdBtn" Header="Threshold" Command="{Binding ThresholdCommand}"/>
             </MenuItem>
         </Menu>
-        <Image x:Name="sourceImg" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="{Binding SourceImage}" />
-    </DockPanel>
+        <Image x:Name="sourceImg" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>
+    </Grid>
 </Window>

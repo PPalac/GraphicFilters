@@ -15,9 +15,7 @@ namespace GraphicFilters.ViewModels.Commands
 
         public RelayCommand(Action execute, Func<Boolean> canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException("execute");
             _canExecute = canExecute;
         }
 
