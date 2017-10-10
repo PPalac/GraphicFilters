@@ -15,7 +15,7 @@
             <MenuItem Header="File">
                 <MenuItem x:Name="openFile" Header="Open Image" Command="{Binding OpenImageCommand}"/>
                 <Separator/>
-                <MenuItem x:Name="exitBtn" Header="Exit"/>
+                <MenuItem x:Name="exitBtn" Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Filters">
                 <MenuItem x:Name="tresholdBtn" Header="Threshold" Command="{Binding ThresholdCommand}"/>

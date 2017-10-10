@@ -40,6 +40,8 @@ namespace GraphicFilters.ViewModels
 
         public ICommand ThresholdCommand { get { return new RelayCommand(OpenThresholdDialog, CanThresholdExecute); } }
 
+        public ICommand ExitCommand { get { return new RelayCommand(Exit); } }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -48,6 +50,10 @@ namespace GraphicFilters.ViewModels
         private void OpenImage()
         {
             var bitmap = fileService.OpenImage();
+            if(bitmap == null)
+            {
+                return;
+            }
             img = new ImageModel(bitmap);
             OnPropertyChanged("SourceImage");
         }
@@ -72,9 +78,9 @@ namespace GraphicFilters.ViewModels
             return false;
         }
 
-        private bool CanExecute()
+        private void Exit()
         {
-            return true;
+            App.Current.MainWindow.Close();
         }
     }
 }

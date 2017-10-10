@@ -17,10 +17,14 @@ namespace GraphicFilters.ViewModels.Services
             };
 
             filepicker.ShowDialog();
+
+            if (string.IsNullOrEmpty(filepicker.FileName))
+            {
+                return null;
+            }
+
             SourceImage = new Bitmap(filepicker.FileName);
-
             return SourceImage;
-
         }
     }
 }
