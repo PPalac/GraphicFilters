@@ -40,7 +40,6 @@ namespace GraphicFilters.ViewModels
             }
         }
 
-
         public int WindowSize
         {
             get { return windowSize; }
