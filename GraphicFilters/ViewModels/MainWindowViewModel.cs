@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
 using GraphicFilters.ViewModels.Services;
 using GraphicFilters.ViewModels.Services.Interfaces;
@@ -15,27 +16,27 @@ namespace GraphicFilters.ViewModels
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         IFileService fileService;
-        BitmapSource sourceImage;
-        Bitmap imgBitmap;
+        private ImageModel img;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
             fileService = new FileService();
+            img = new ImageModel();
         }
 
         public BitmapSource SourceImage
         {
-            get { return sourceImage; }
+            get { return img.SourceImage; }
             set
             {
-                sourceImage = value;
+                img.SourceImage = value;
                 OnPropertyChanged("SourceImage");
             }
         }
 
-        public ICommand OpenImageCommand { get { return new RelayCommand(OpenImage, CanExecute); } }
+        public ICommand OpenImageCommand { get { return new RelayCommand(OpenImage); } }
 
         public ICommand ThresholdCommand { get { return new RelayCommand(OpenThresholdDialog, CanThresholdExecute); } }
 
@@ -46,27 +47,24 @@ namespace GraphicFilters.ViewModels
 
         private void OpenImage()
         {
-            imgBitmap = fileService.OpenImage();
-            SourceImage = Imaging.CreateBitmapSourceFromHBitmap(
-                imgBitmap.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-                );
+            var bitmap = fileService.OpenImage();
+            img = new ImageModel(bitmap);
+            OnPropertyChanged("SourceImage");
         }
 
         private void OpenThresholdDialog()
         {
             var thresholdDialog = new ThresholdDialog()
             {
-                DataContext = new ThresholdDialogViewModel(ref sourceImage, ref imgBitmap, OnPropertyChanged),
+                DataContext = new ThresholdDialogViewModel(img, OnPropertyChanged),
                 Owner = App.Current.MainWindow
             };
+            ((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
             thresholdDialog.Show();
         }
         private bool CanThresholdExecute()
         {
-            if (sourceImage != null)
+            if (img.SourceImage != null)
             {
                 return true;
             }

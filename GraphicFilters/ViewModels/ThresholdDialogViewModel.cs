@@ -5,21 +5,27 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
 using GraphicFilters.ViewModels.Filters;
+using GraphicFilters.Views.Dialogs;
 
 namespace GraphicFilters.ViewModels
 {
     public class ThresholdDialogViewModel : INotifyPropertyChanged
     {
         private int percentage, windowSize;
-        private BitmapSource sourceImage;
-        private Bitmap imgBitmap;
+        private ImageModel img;
+        private Action<String> PropChanged;
+        private Bitmap bitmap;
 
-        public ThresholdDialogViewModel(ref BitmapSource SourceImage, ref Bitmap ImgBitmap, Action<String>Changed)
+        public Action Close;
+
+        public ThresholdDialogViewModel(ImageModel imgModel, Action<String>Changed)
         {
-            sourceImage = SourceImage;
-            imgBitmap = ImgBitmap;
+            img = imgModel;
+            PropChanged = Changed;
+            windowSize = 3;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -45,27 +51,38 @@ namespace GraphicFilters.ViewModels
             }
         }
 
+        public ICommand ApplyChangesCommand { get { return new RelayCommand(Threshold); } }
+
+        public ICommand CancelCommand { get { return new RelayCommand(Cancel); } }
+
+        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ICommand ApplyChangesCommand { get { return new RelayCommand(Threshold, CanExecute); } } 
-
         private void Threshold()
         {
             var threshold = new Threshold();
-            sourceImage = Imaging.CreateBitmapSourceFromHBitmap(
-                threshold.Run(imgBitmap,windowSize,percentage).GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions()
-                );
+            bitmap = threshold.Run(img.ImgBitmap, windowSize, percentage);
+
+            img.SetSourceImage(bitmap);
+
+            PropChanged.Invoke("SourceImage");
         }
 
-        private bool CanExecute()
+        private void Cancel()
         {
-            return true;
+            img.SetSourceImage(img.ImgBitmap);
+            PropChanged.Invoke("SourceImage");
+            Close.Invoke();   
+        }
+
+        private void Save()
+        {
+            img.ImgBitmap = bitmap;
+            Close.Invoke();
         }
     }
 }

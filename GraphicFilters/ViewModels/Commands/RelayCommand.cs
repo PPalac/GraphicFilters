@@ -5,46 +5,46 @@ namespace GraphicFilters.ViewModels.Commands
 {
     public class RelayCommand : ICommand
     {
-        private readonly Func<Boolean> _canExecute;
-        private readonly Action _execute;
+        private readonly Func<Boolean> canExecute;
+        private readonly Action execute;
 
         public RelayCommand(Action execute)
-          : this(execute, null)
+          : this(execute, ()=>true)
         {
         }
 
         public RelayCommand(Action execute, Func<Boolean> canExecute)
         {
-            if( execute == null)
+            if (execute == null)
             {
                 throw new ArgumentNullException("execute");
             }
-            _execute = execute;
-            _canExecute = canExecute;
+            this.execute = execute;
+            this.canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged
         {
             add
             {
-                if (_canExecute != null)
+                if (canExecute != null)
                     CommandManager.RequerySuggested += value;
             }
             remove
             {
-                if (_canExecute != null)
+                if (canExecute != null)
                     CommandManager.RequerySuggested -= value;
             }
         }
 
         public Boolean CanExecute(Object parameter)
         {
-            return _canExecute == null ? true : _canExecute();
+            return canExecute == null ? true : canExecute();
         }
 
         public void Execute(Object parameter)
         {
-            _execute();
+            execute();
         }
     }
-    }
+}
