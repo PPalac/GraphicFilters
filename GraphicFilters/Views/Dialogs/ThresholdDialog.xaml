@@ -6,7 +6,13 @@
         xmlns:local="clr-namespace:GraphicFilters.Views.Dialogs"
         mc:Ignorable="d"
         Title="Threshold" Height="310" Width="300" ResizeMode="NoResize"
-        xmlns:viewmodel="clr-namespace:GraphicFilters.ViewModels">
+        xmlns:viewmodel="clr-namespace:GraphicFilters.ViewModels"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CancelCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Label Margin="18,42,197,201" FontSize="12">Percentage</Label>
         <Slider x:Name="percentage" Margin="102,47,47,201" Minimum="0" Maximum="100" Interval="1" Value="{Binding Percentage}"/>

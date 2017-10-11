@@ -75,7 +75,7 @@ namespace GraphicFilters.ViewModels
         {
             img.SetSourceImage(img.ImgBitmap);
             PropChanged.Invoke("SourceImage");
-            Close.Invoke();   
+            //Close.Invoke();   
         }
 
         private void Save()
