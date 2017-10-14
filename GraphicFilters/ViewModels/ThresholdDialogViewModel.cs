@@ -1,14 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
 using GraphicFilters.ViewModels.Filters;
-using GraphicFilters.Views.Dialogs;
 
 namespace GraphicFilters.ViewModels
 {
@@ -50,7 +46,7 @@ namespace GraphicFilters.ViewModels
             }
         }
 
-        public ICommand ApplyChangesCommand { get { return new RelayCommand(Threshold); } }
+        public ICommand ApplyChangesCommand { get { return new RelayCommand(RunThreshold); } }
 
         public ICommand CancelCommand { get { return new RelayCommand(Cancel); } }
 
@@ -61,7 +57,7 @@ namespace GraphicFilters.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Threshold()
+        private void RunThreshold()
         {
             var threshold = new Threshold();
             bitmap = threshold.Run(img.ImgBitmap, windowSize, percentage);
@@ -75,7 +71,7 @@ namespace GraphicFilters.ViewModels
         {
             img.SetSourceImage(img.ImgBitmap);
             PropChanged.Invoke("SourceImage");
-            //Close.Invoke();   
+            Close.Invoke();   
         }
 
         private void Save()

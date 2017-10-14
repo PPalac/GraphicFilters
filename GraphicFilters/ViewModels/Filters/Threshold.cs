@@ -14,7 +14,6 @@ namespace GraphicFilters.ViewModels.Filters
             pixelArray = new float[img.Width, img.Height];
             s = pixelsWindow;
             t = percentage;
-            var bytes = ConvertToBytes(img);
 
             for (int x = 0; x < img.Width; x++)
             {
@@ -80,12 +79,6 @@ namespace GraphicFilters.ViewModels.Filters
                 }
             }
             return outImg;
-        }
-
-        public byte[] ConvertToBytes(Bitmap img)
-        {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(img, typeof(byte[]));
         }
     }
 }

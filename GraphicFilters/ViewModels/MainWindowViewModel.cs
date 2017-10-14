@@ -1,12 +1,10 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
+using GraphicFilters.ViewModels.Filters;
 using GraphicFilters.ViewModels.Services;
 using GraphicFilters.ViewModels.Services.Interfaces;
 using GraphicFilters.Views.Dialogs;
@@ -24,6 +22,10 @@ namespace GraphicFilters.ViewModels
         {
             fileService = new FileService();
             img = new ImageModel();
+
+            var dlg = new GaussianBlurDialog();
+
+            dlg.Show();
         }
 
         public BitmapSource SourceImage
@@ -50,7 +52,7 @@ namespace GraphicFilters.ViewModels
         private void OpenImage()
         {
             var bitmap = fileService.OpenImage();
-            if(bitmap == null)
+            if (bitmap == null)
             {
                 return;
             }
@@ -60,13 +62,21 @@ namespace GraphicFilters.ViewModels
 
         private void OpenThresholdDialog()
         {
-            var thresholdDialog = new ThresholdDialog()
-            {
-                DataContext = new ThresholdDialogViewModel(img, OnPropertyChanged),
-                Owner = App.Current.MainWindow
-            };
-            ((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
-            thresholdDialog.Show();
+            OpenGaussianBlurDialog();
+            //var thresholdDialog = new ThresholdDialog()
+            //{
+            //    DataContext = new ThresholdDialogViewModel(img, OnPropertyChanged),
+            //    Owner = App.Current.MainWindow
+            //};
+            //((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
+            //thresholdDialog.Show();
+        }
+
+        private void OpenGaussianBlurDialog()
+        {
+            var gaussian = new GaussianBlur(img.ImgBitmap, 3);
+            gaussian.Run();
+            
         }
         private bool CanThresholdExecute()
         {
@@ -81,6 +91,12 @@ namespace GraphicFilters.ViewModels
         private void Exit()
         {
             App.Current.MainWindow.Close();
+        }
+
+        private void SetBitmap(Bitmap map)
+        {
+            img.SetSourceImage(map);
+            OnPropertyChanged("SourceImage");
         }
     }
 }
