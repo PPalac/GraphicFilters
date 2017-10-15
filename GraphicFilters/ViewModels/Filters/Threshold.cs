@@ -1,53 +1,85 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace GraphicFilters.ViewModels.Filters
 {
     public class Threshold
     {
+        private Bitmap imgBitmap;
+        private int windowSize;
+        private int percentage;
         private float[,] pixelArray;
-        float sum;
-        int s, t, x1, x2, x3, y1, y2, y3, count;
 
-        public Bitmap Run(Bitmap img, int pixelsWindow, int percentage)
+        public Threshold(Bitmap bitmap, int windowSize, int percent)
         {
-            var outImg = new Bitmap(img.Width, img.Height);
-            pixelArray = new float[img.Width, img.Height];
-            s = pixelsWindow;
-            t = percentage;
+            imgBitmap = bitmap;
+            this.windowSize = windowSize;
+            percentage = percent;
+        }
 
-            for (int x = 0; x < img.Width; x++)
+        public Bitmap Run()
+        {
+            float sum;
+            int x1, x2, x3, y1, y2, y3, count;
+
+            Bitmap outBitmap = new Bitmap(imgBitmap.Width, imgBitmap.Height);
+
+            BitmapData outBitmapData = outBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
+            BitmapData bitmapData = imgBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
+
+            pixelArray = new float[imgBitmap.Width, imgBitmap.Height];
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(imgBitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * imgBitmap.Height;
+            byte[] pixels = new byte[byteCount];
+            byte[] outPixels = new byte[byteCount];
+
+            IntPtr ptrFirstPixel = bitmapData.Scan0;
+            IntPtr ptrFirstOutPixel = outBitmapData.Scan0;
+            Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
+            Marshal.Copy(ptrFirstOutPixel, outPixels, 0, outPixels.Length);
+            int heightInPixels = bitmapData.Height;
+            int widthInBytes = bitmapData.Width * bytesPerPixel;
+
+            for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
             {
                 sum = 0;
 
-                for (int y = 0; y < img.Height; y++)
+                for (int y = 0; y < heightInPixels; y++)
                 {
-                    sum += img.GetPixel(x, y).GetBrightness();
+                    int currentLine = y * bitmapData.Stride;
+
+                    Color cl = Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
+                    sum += cl.GetBrightness();
 
                     if (x == 0)
                     {
-                        pixelArray[x, y] = sum;
+                        pixelArray[x / bytesPerPixel, y] = sum;
                     }
                     else
                     {
-                        pixelArray[x, y] = pixelArray[x - 1, y] + sum;
+                        pixelArray[x / bytesPerPixel, y] = pixelArray[x / bytesPerPixel - 1, y] + sum;
                     }
                 }
             }
 
-            for (int x = 0; x < img.Width; x++)
+            for (int y = 0; y < heightInPixels; y++)
             {
-                for (int y = 0; y < img.Height; y++)
+                int currentLine = y * bitmapData.Stride;
+
+                for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                 {
-                    x1 = x - s / 2;
-                    x2 = x + s / 2;
+                    x1 = x / bytesPerPixel - windowSize / 2;
+                    x2 = x / bytesPerPixel + windowSize / 2;
                     x3 = x1 - 1;
-                    y1 = y - s / 2;
-                    y2 = y + s / 2;
+                    y1 = y - windowSize / 2;
+                    y2 = y + windowSize / 2;
                     y3 = y1 - 1;
 
-                    if (x2 >= img.Width)
+                    if (x2 >= imgBitmap.Width)
                     {
-                        x2 = img.Width-1;
+                        x2 = imgBitmap.Width - 1;
                     }
 
                     if (x3 < 0)
@@ -55,9 +87,9 @@ namespace GraphicFilters.ViewModels.Filters
                         x3 = 0;
                     }
 
-                    if (y2 >= img.Height)
+                    if (y2 >= imgBitmap.Height)
                     {
-                        y2 = img.Height-1;
+                        y2 = imgBitmap.Height - 1;
                     }
 
                     if (y3 < 0)
@@ -68,17 +100,27 @@ namespace GraphicFilters.ViewModels.Filters
                     count = (x2 - x1) * (y2 - y1);
                     sum = pixelArray[x2, y2] - pixelArray[x2, y3] - pixelArray[x3, y2] + pixelArray[x3, y3];
 
-                    if ((img.GetPixel(x, y).GetBrightness() * count) < (sum * (100 - t) / 100))
+                    if ((Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]).GetBrightness() * count) < (sum * (100 - percentage) / 100))
                     {
-                        outImg.SetPixel(x, y, Color.Black);
+                        outPixels[currentLine + x] = 0;
+                        outPixels[currentLine + x + 1] = 0;
+                        outPixels[currentLine + x + 2] = 0;
                     }
                     else
                     {
-                        outImg.SetPixel(x, y, Color.White);
+                        outPixels[currentLine + x] = 255;
+                        outPixels[currentLine + x + 1] = 255;
+                        outPixels[currentLine + x + 2] = 255;
                     }
                 }
             }
-            return outImg;
+
+            Marshal.Copy(outPixels, 0, ptrFirstOutPixel, pixels.Length);
+            outBitmap.UnlockBits(outBitmapData);
+            imgBitmap.UnlockBits(bitmapData);
+
+            return outBitmap;
         }
     }
 }
+

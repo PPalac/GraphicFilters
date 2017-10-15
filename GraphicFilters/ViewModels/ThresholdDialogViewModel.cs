@@ -61,8 +61,8 @@ namespace GraphicFilters.ViewModels
 
         private void RunThreshold()
         {
-            var threshold = new Threshold();
-            bitmap = threshold.Run(img.ImgBitmap, windowSize, percentage);
+            var threshold = new Threshold(img.ImgBitmap, windowSize, percentage);
+            bitmap = threshold.Run();
 
             img.SetSourceImage(bitmap);
 
