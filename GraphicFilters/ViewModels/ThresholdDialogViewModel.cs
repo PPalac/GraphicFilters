@@ -48,9 +48,11 @@ namespace GraphicFilters.ViewModels
 
         public ICommand ApplyChangesCommand { get { return new RelayCommand(RunThreshold); } }
 
-        public ICommand CancelCommand { get { return new RelayCommand(Cancel); } }
+        public ICommand DiscardChangesCommand { get { return new RelayCommand(DiscardChanges); } }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        public ICommand CloseCommand { get { return new RelayCommand(CloseDialog); } }
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -67,16 +69,24 @@ namespace GraphicFilters.ViewModels
             MainWindowPropChanged.Invoke("SourceImage");
         }
 
-        private void Cancel()
+        private void DiscardChanges()
         {
             img.SetSourceImage(img.ImgBitmap);
-            MainWindowPropChanged.Invoke("SourceImage");
-            //Close.Invoke();   
+            MainWindowPropChanged.Invoke("SourceImage"); 
         }
 
         private void Save()
         {
+            if(bitmap == null)
+            {
+                bitmap = img.ImgBitmap;
+            }
             img.ImgBitmap = bitmap;
+            Close.Invoke();
+        }
+
+        private void CloseDialog()
+        {
             Close.Invoke();
         }
     }

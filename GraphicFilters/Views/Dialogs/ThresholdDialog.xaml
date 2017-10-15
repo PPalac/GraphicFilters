@@ -5,21 +5,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Threshold" Height="310" Width="300" ResizeMode="NoResize">
+        Title="Threshold" Height="310" Width="300" ResizeMode="NoResize"
+        Background="#333333" Foreground="White">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding CancelCommand}"/>
+            <i:InvokeCommandAction Command="{Binding DiscardChangesCommand}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <Label Margin="18,42,197,201" FontSize="12">Percentage</Label>
+        <Label Foreground="White" Margin="18,42,197,201" FontSize="12">Percentage</Label>
         <Slider x:Name="percentage" Margin="102,47,47,201" Minimum="0" Maximum="100" Interval="1" Value="{Binding Percentage}"/>
         <TextBlock Text="{Binding ElementName=percentage, Path=Value}" Margin="252,47,13,201"></TextBlock>
-        <Label Margin="21,94,171,149">Window size</Label>
+        <Label Foreground="White" Margin="21,94,171,149">Window size</Label>
         <TextBox x:Name="window" Margin="139,99,120,152" Text="{Binding WindowSize}"/>
-        <Label FontSize="10" Margin="179,100,71,149">px</Label>
+        <Label Foreground="White" FontSize="10" Margin="179,100,71,149">px</Label>
         <Button x:Name="applyBtn" Margin="209,189,31,63" Command="{Binding ApplyChangesCommand}">Apply</Button>
-        <Button x:Name="cancelBtn" Margin="121,189,119,63" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=window}">Cancel</Button>
+        <Button x:Name="cancelBtn" Margin="121,189,119,63" Command="{Binding CloseCommand}">Cancel</Button>
         <Button x:Name="saveBtn" Margin="33,189,207,63" Command="{Binding SaveCommand}">Save</Button>
     </Grid>
 </Window>

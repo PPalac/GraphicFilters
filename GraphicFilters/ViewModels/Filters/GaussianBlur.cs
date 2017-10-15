@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using GraphicFilters.Models;
 
 namespace GraphicFilters.ViewModels.Filters
@@ -41,7 +40,6 @@ namespace GraphicFilters.ViewModels.Filters
             outImgBitmap = new Bitmap(imgBitmap.Width, imgBitmap.Height);
 
             SetUpBackgroundWorkers();
-
         }
 
         protected virtual void OnWorkFinished(EventArgs e)

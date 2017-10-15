@@ -5,21 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicFilters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800"
+        Title="Graphic Filters" Height="600" Width="800"
         xmlns:viewmodel="clr-namespace:GraphicFilters.ViewModels">
     <Window.DataContext>
         <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
     <Grid Background="Black">
-        <Menu VerticalAlignment="Top" FontSize="12">
+        <Menu VerticalAlignment="Top" FontSize="12" Background="#333333" Foreground="White">
             <MenuItem Header="File">
-                <MenuItem Header="Open Image" Command="{Binding OpenImageCommand}"/>
+                <MenuItem Header="Open Image" Foreground="Black" Command="{Binding OpenImageCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Data/Icons/image-icon.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator/>
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                <MenuItem Header="Exit" Foreground="Black" Command="{Binding ExitCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Data/Icons/exit-icon.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Filters">
-                <MenuItem Header="Threshold" Command="{Binding ThresholdCommand}"/>
-                <MenuItem Header="Gaussian Blur" Command="{Binding GaussianBlurCommand}"/>
+                <MenuItem Header="Threshold" Foreground="Black" Command="{Binding ThresholdCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Data/Icons/threshold-icon.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Gaussian Blur" Foreground="Black" Command="{Binding GaussianBlurCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Data/Icons/blur-icon.png" Width="15" Height="15"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <Image  VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>

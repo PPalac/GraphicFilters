@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Input;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
@@ -17,6 +14,7 @@ namespace GraphicFilters.ViewModels
         private DataTable kernel;
         private int kernelSize;
         private ImageModel img;
+        private Bitmap originalBitmap;
 
         private Action<string> MainWindowPropertyChanged;
         public Action Close;
@@ -27,6 +25,7 @@ namespace GraphicFilters.ViewModels
             kernel = new DataTable();
             kernelSize = 3;
             this.img = img;
+            originalBitmap = img.ImgBitmap;
             MainWindowPropertyChanged = MainWindowPropChanged;
 
             for (int i = 0; i < 3; i++)
@@ -79,9 +78,11 @@ namespace GraphicFilters.ViewModels
 
         public ICommand ApplyChangesCommand { get { return new RelayCommand(RunBlur); } }
 
-        public ICommand CancelCommand { get { return new RelayCommand(Cancel); } }
+        public ICommand CancelCommand { get { return new RelayCommand(CloseDialog); } }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+
+        public ICommand CloseCommand { get { return new RelayCommand(CloseDialog); } }
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -119,18 +120,22 @@ namespace GraphicFilters.ViewModels
             OnPropertyChanged("Kernel");
         }
 
-        private void Cancel()
+        private void DiscardChanges()
         {
+            img.ImgBitmap = originalBitmap;
             img.SetSourceImage(img.ImgBitmap);
             MainWindowPropertyChanged.Invoke("SourceImage");
-            Close.Invoke();
         }
 
         private void Save()
         {
-           
-            MainWindowPropertyChanged("SourceImage");
-            //Close.Invoke();
+            originalBitmap = img.ImgBitmap;
+            Close.Invoke();
+        }
+
+        private void CloseDialog()
+        {
+            Close.Invoke();
         }
 
         private float[] GetKernel()

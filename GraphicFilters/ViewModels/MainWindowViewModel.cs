@@ -36,9 +36,9 @@ namespace GraphicFilters.ViewModels
 
         public ICommand OpenImageCommand { get { return new RelayCommand(OpenImage); } }
 
-        public ICommand ThresholdCommand { get { return new RelayCommand(OpenThresholdDialog, CanThresholdExecute); } }
+        public ICommand ThresholdCommand { get { return new RelayCommand(OpenThresholdDialog, CanFilterExecute); } }
 
-        public ICommand GaussianBlurCommand { get { return new RelayCommand(OpenGaussianBlurDialog); } }
+        public ICommand GaussianBlurCommand { get { return new RelayCommand(OpenGaussianBlurDialog, CanFilterExecute); } }
 
         public ICommand ExitCommand { get { return new RelayCommand(Exit); } }
 
@@ -82,7 +82,7 @@ namespace GraphicFilters.ViewModels
             ((GaussianBlurDialogViewModel)gaussianBlurDialog.DataContext).Close += gaussianBlurDialog.Close;
             gaussianBlurDialog.Show();
         }
-        private bool CanThresholdExecute()
+        private bool CanFilterExecute()
         {
             if (img.SourceImage != null)
             {
