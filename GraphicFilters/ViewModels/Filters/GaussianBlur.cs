@@ -37,7 +37,7 @@ namespace GraphicFilters.ViewModels.Filters
             red = new byte[imgBitmap.Width, imgBitmap.Height];
             green = new byte[imgBitmap.Width, imgBitmap.Height];
             blue = new byte[imgBitmap.Width, imgBitmap.Height];
-            outImgBitmap = new Bitmap(imgBitmap.Width, imgBitmap.Height);
+            outImgBitmap = img.ImgBitmap;
 
             SetUpBackgroundWorkers();
         }

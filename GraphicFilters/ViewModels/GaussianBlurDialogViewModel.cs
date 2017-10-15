@@ -25,7 +25,7 @@ namespace GraphicFilters.ViewModels
             kernel = new DataTable();
             kernelSize = 3;
             this.img = img;
-            originalBitmap = img.ImgBitmap;
+            originalBitmap = img.ImgBitmap.Clone(new Rectangle(0,0,img.ImgBitmap.Width,img.ImgBitmap.Height),img.ImgBitmap.PixelFormat);
             MainWindowPropertyChanged = MainWindowPropChanged;
 
             for (int i = 0; i < 3; i++)

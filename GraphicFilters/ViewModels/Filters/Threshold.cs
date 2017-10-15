@@ -24,7 +24,7 @@ namespace GraphicFilters.ViewModels.Filters
             float sum;
             int x1, x2, x3, y1, y2, y3, count;
 
-            Bitmap outBitmap = new Bitmap(imgBitmap.Width, imgBitmap.Height);
+            Bitmap outBitmap = imgBitmap.Clone(new Rectangle(0,0,imgBitmap.Width, imgBitmap.Height),imgBitmap.PixelFormat);
 
             BitmapData outBitmapData = outBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
             BitmapData bitmapData = imgBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
