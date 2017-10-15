@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Microsoft.Win32;
 
 namespace GraphicFilters
 {

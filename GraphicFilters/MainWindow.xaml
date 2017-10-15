@@ -11,16 +11,17 @@
         <viewmodel:MainWindowViewModel/>
     </Window.DataContext>
     <Grid Background="Black">
-        <Menu x:Name="fileMenu" VerticalAlignment="Top" FontSize="12">
+        <Menu VerticalAlignment="Top" FontSize="12">
             <MenuItem Header="File">
-                <MenuItem x:Name="openFile" Header="Open Image" Command="{Binding OpenImageCommand}"/>
+                <MenuItem Header="Open Image" Command="{Binding OpenImageCommand}"/>
                 <Separator/>
-                <MenuItem x:Name="exitBtn" Header="Exit" Command="{Binding ExitCommand}"/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="Filters">
-                <MenuItem x:Name="tresholdBtn" Header="Threshold" Command="{Binding ThresholdCommand}"/>
+                <MenuItem Header="Threshold" Command="{Binding ThresholdCommand}"/>
+                <MenuItem Header="Gaussian Blur" Command="{Binding GaussianBlurCommand}"/>
             </MenuItem>
         </Menu>
-        <Image x:Name="sourceImg" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>
+        <Image  VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>
     </Grid>
 </Window>

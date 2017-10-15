@@ -22,10 +22,6 @@ namespace GraphicFilters.ViewModels
         {
             fileService = new FileService();
             img = new ImageModel();
-
-            var dlg = new GaussianBlurDialog();
-
-            dlg.Show();
         }
 
         public BitmapSource SourceImage
@@ -42,6 +38,8 @@ namespace GraphicFilters.ViewModels
 
         public ICommand ThresholdCommand { get { return new RelayCommand(OpenThresholdDialog, CanThresholdExecute); } }
 
+        public ICommand GaussianBlurCommand { get { return new RelayCommand(OpenGaussianBlurDialog); } }
+
         public ICommand ExitCommand { get { return new RelayCommand(Exit); } }
 
         private void OnPropertyChanged(string propertyName)
@@ -56,27 +54,33 @@ namespace GraphicFilters.ViewModels
             {
                 return;
             }
+
             img = new ImageModel(bitmap);
             OnPropertyChanged("SourceImage");
         }
 
         private void OpenThresholdDialog()
         {
-            OpenGaussianBlurDialog();
-            //var thresholdDialog = new ThresholdDialog()
-            //{
-            //    DataContext = new ThresholdDialogViewModel(img, OnPropertyChanged),
-            //    Owner = App.Current.MainWindow
-            //};
-            //((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
-            //thresholdDialog.Show();
+            var thresholdDialog = new ThresholdDialog()
+            {
+                DataContext = new ThresholdDialogViewModel(img, OnPropertyChanged),
+                Owner = App.Current.MainWindow
+            };
+
+            ((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
+            thresholdDialog.Show();
         }
 
         private void OpenGaussianBlurDialog()
         {
-            var gaussian = new GaussianBlur(img.ImgBitmap, 3);
-            gaussian.Run();
-            
+            var gaussianBlurDialog = new GaussianBlurDialog
+            {
+                DataContext = new GaussianBlurDialogViewModel(img, OnPropertyChanged),
+                Owner = App.Current.MainWindow
+            };
+
+            ((GaussianBlurDialogViewModel)gaussianBlurDialog.DataContext).Close += gaussianBlurDialog.Close;
+            gaussianBlurDialog.Show();
         }
         private bool CanThresholdExecute()
         {

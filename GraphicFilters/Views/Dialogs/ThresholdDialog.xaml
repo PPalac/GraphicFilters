@@ -1,13 +1,11 @@
 ﻿<Window x:Class="GraphicFilters.Views.Dialogs.ThresholdDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GraphicFilters.Views.Dialogs"
         mc:Ignorable="d"
-        Title="Threshold" Height="310" Width="300" ResizeMode="NoResize"
-        xmlns:viewmodel="clr-namespace:GraphicFilters.ViewModels"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+        Title="Threshold" Height="310" Width="300" ResizeMode="NoResize">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CancelCommand}"/>

@@ -3,13 +3,16 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using GraphicFilters.Models;
 
 namespace GraphicFilters.ViewModels.Filters
 {
     class GaussianBlur
     {
-        private Bitmap Img;
-        private Bitmap outImg;
+        private Bitmap imgBitmap;
+        private Bitmap outImgBitmap;
+        private ImageModel imgModel;
         private BackgroundWorker redWorker;
         private BackgroundWorker greenWorker;
         private BackgroundWorker blueWorker;
@@ -21,19 +24,29 @@ namespace GraphicFilters.ViewModels.Filters
         private byte[,] bluredRedPixels;
         private byte[,] bluredGreenPixels;
         private byte[,] bluredBluePixels;
+        private float[] kernelArr;
         private object syncObject = new object();
 
-        public GaussianBlur(Bitmap img, int kernelSize)
+        public event EventHandler WorkFinished;
+
+        public GaussianBlur(ImageModel img, int kernelSize, float[] kernel)
         {
-            Img = img;
+            imgModel = img;
             this.kernelSize = kernelSize;
-            red = new byte[Img.Width, Img.Height];
-            green = new byte[Img.Width, Img.Height];
-            blue = new byte[Img.Width, Img.Height];
-            outImg = new Bitmap(Img.Width, Img.Height);
+            kernelArr = kernel;
+            imgBitmap = imgModel.ImgBitmap;
+            red = new byte[imgBitmap.Width, imgBitmap.Height];
+            green = new byte[imgBitmap.Width, imgBitmap.Height];
+            blue = new byte[imgBitmap.Width, imgBitmap.Height];
+            outImgBitmap = new Bitmap(imgBitmap.Width, imgBitmap.Height);
 
             SetUpBackgroundWorkers();
 
+        }
+
+        protected virtual void OnWorkFinished(EventArgs e)
+        {
+            WorkFinished?.Invoke(this, e);
         }
 
         public void Run()
@@ -119,10 +132,10 @@ namespace GraphicFilters.ViewModels.Filters
 
         public void GetColors()
         {
-            BitmapData bitmapData = Img.LockBits(new Rectangle(0, 0, Img.Width, Img.Height), ImageLockMode.ReadWrite, Img.PixelFormat);
+            BitmapData bitmapData = imgBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
 
-            int bytesPerPixel = Bitmap.GetPixelFormatSize(Img.PixelFormat) / 8;
-            int byteCount = bitmapData.Stride * Img.Height;
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(imgBitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * imgBitmap.Height;
             byte[] pixels = new byte[byteCount];
             IntPtr ptrFirstPixel = bitmapData.Scan0;
             Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
@@ -142,7 +155,8 @@ namespace GraphicFilters.ViewModels.Filters
                     currentWidthInPixels++;
                 }
             }
-            Img.UnlockBits(bitmapData);
+
+            imgBitmap.UnlockBits(bitmapData);
         }
         private void Blur(object sender, DoWorkEventArgs e)
         {
@@ -150,52 +164,56 @@ namespace GraphicFilters.ViewModels.Filters
             var width = pixels.GetLength(0);
             var height = pixels.GetLength(1);
             float sum = 0;
+            float kernelSum = 0;
             int kernelX = 0;
             int kernelY = 0;
             byte[,] outPixels = new byte[width, height];
-            float[] kernelArr = new float[9] { 1f, 2f, 1f, 2f, 4f, 2f, 1f, 2f, 1f };
-            int iterator;
+            int iterator = 0;
 
-            for (int x = 0; x < width; x++)
+            foreach (var element in kernelArr)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    iterator = 0;
-                    sum = 0;
+                kernelSum += element;
+            }
 
-                    for (int x1 = x - kernelSize / 2; x1 <= x + kernelSize / 2; x1++)
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    sum = 0;
+                    iterator = 0;
+                    for (int y1 = y - kernelSize / 2; y1 <= y + kernelSize / 2; y1++)
                     {
-                        if (x1 < 0)
+                        if (y1 < 0)
                         {
-                            kernelX = 0;
+                            kernelY = 0;
                         }
                         else
                         {
-                            if (x1 < width)
+                            if (y1 < height)
                             {
-                                kernelX = x1;
+                                kernelY = y1;
                             }
                             else
                             {
-                                kernelX = width - 1;
+                                kernelY = height - 1;
                             }
                         }
 
-                        for (int y1 = y - kernelSize / 2; y1 <= y + kernelSize / 2; y1++)
+                        for (int x1 = x - kernelSize / 2; x1 <= x + kernelSize / 2; x1++)
                         {
-                            if (y1 < 0)
+                            if (x1 < 0)
                             {
-                                kernelY = 0;
+                                kernelX = 0;
                             }
                             else
                             {
-                                if (y1 < height)
+                                if (x1 < width)
                                 {
-                                    kernelY = y1;
+                                    kernelX = x1;
                                 }
                                 else
                                 {
-                                    kernelY = height - 1;
+                                    kernelX = width - 1;
                                 }
                             }
 
@@ -204,7 +222,7 @@ namespace GraphicFilters.ViewModels.Filters
                         }
                     }
 
-                    outPixels[x, y] = (byte)(sum / 16);
+                    outPixels[x, y] = (byte)(sum / kernelSum);
                 }
             }
 
@@ -213,10 +231,10 @@ namespace GraphicFilters.ViewModels.Filters
 
         public void ApplyBlur()
         {
-            BitmapData bitmapData = outImg.LockBits(new Rectangle(0, 0, outImg.Width, outImg.Height), ImageLockMode.ReadWrite, Img.PixelFormat);
+            BitmapData bitmapData = outImgBitmap.LockBits(new Rectangle(0, 0, outImgBitmap.Width, outImgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
 
-            int bytesPerPixel = Bitmap.GetPixelFormatSize(Img.PixelFormat) / 8;
-            int byteCount = bitmapData.Stride * outImg.Height;
+            int bytesPerPixel = Bitmap.GetPixelFormatSize(imgBitmap.PixelFormat) / 8;
+            int byteCount = bitmapData.Stride * outImgBitmap.Height;
             byte[] pixels = new byte[byteCount];
             IntPtr ptrFirstPixel = bitmapData.Scan0;
             Marshal.Copy(ptrFirstPixel, pixels, 0, pixels.Length);
@@ -241,7 +259,10 @@ namespace GraphicFilters.ViewModels.Filters
             }
 
             Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
-            outImg.UnlockBits(bitmapData);
+            outImgBitmap.UnlockBits(bitmapData);
+            imgModel.SetSourceImage(outImgBitmap);
+
+            OnWorkFinished(new EventArgs());
         }
     }
 }

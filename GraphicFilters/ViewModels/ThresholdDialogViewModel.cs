@@ -12,7 +12,7 @@ namespace GraphicFilters.ViewModels
     {
         private int percentage, windowSize;
         private ImageModel img;
-        private Action<String> PropChanged;
+        private Action<String> MainWindowPropChanged;
         private Bitmap bitmap;
 
         public Action Close;
@@ -20,7 +20,7 @@ namespace GraphicFilters.ViewModels
         public ThresholdDialogViewModel(ImageModel imgModel, Action<String>Changed)
         {
             img = imgModel;
-            PropChanged = Changed;
+            MainWindowPropChanged = Changed;
             windowSize = 3;
         }
 
@@ -64,14 +64,14 @@ namespace GraphicFilters.ViewModels
 
             img.SetSourceImage(bitmap);
 
-            PropChanged.Invoke("SourceImage");
+            MainWindowPropChanged.Invoke("SourceImage");
         }
 
         private void Cancel()
         {
             img.SetSourceImage(img.ImgBitmap);
-            PropChanged.Invoke("SourceImage");
-            Close.Invoke();   
+            MainWindowPropChanged.Invoke("SourceImage");
+            //Close.Invoke();   
         }
 
         private void Save()

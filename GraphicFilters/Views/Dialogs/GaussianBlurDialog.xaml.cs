@@ -11,7 +11,6 @@ namespace GraphicFilters.Views.Dialogs
         {
             InitializeComponent();
             this.SizeToContent = SizeToContent.WidthAndHeight;
-           // this.KernelMatrix.AutoGeneratingColumn += KernelMatrix_AutoGeneratingColumn;
         }
     }
 }
