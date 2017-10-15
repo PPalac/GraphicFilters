@@ -259,6 +259,7 @@ namespace GraphicFilters.ViewModels.Filters
             Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
             outImgBitmap.UnlockBits(bitmapData);
             imgModel.SetSourceImage(outImgBitmap);
+            imgModel.ImgBitmap = outImgBitmap;
 
             OnWorkFinished(new EventArgs());
         }

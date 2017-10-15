@@ -78,7 +78,7 @@ namespace GraphicFilters.ViewModels
 
         public ICommand ApplyChangesCommand { get { return new RelayCommand(RunBlur); } }
 
-        public ICommand CancelCommand { get { return new RelayCommand(CloseDialog); } }
+        public ICommand DiscardChangesCommand { get { return new RelayCommand(DiscardChanges); } }
 
         public ICommand SaveCommand { get { return new RelayCommand(Save); } }
 
@@ -105,16 +105,18 @@ namespace GraphicFilters.ViewModels
 
         private void OnKernelSizeChanged()
         {
+            object[] rowData = new object[kernelSize];
             kernel = new DataTable();
 
             for (int i = 0; i < kernelSize; i++)
             {
+                rowData[i] = "1";
                 kernel.Columns.Add();
             }
 
             for (int i = 0; i < kernelSize; i++)
-            {
-                kernel.Rows.Add();
+            {   
+                kernel.Rows.Add(rowData);
             }
 
             OnPropertyChanged("Kernel");
