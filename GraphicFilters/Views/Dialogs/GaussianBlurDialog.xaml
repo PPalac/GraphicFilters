@@ -20,5 +20,7 @@
         <Button Content="Save" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Margin="-180,226,0,10" Command="{Binding SaveCommand}"/>
         <Button Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Margin="0,226,0,10" Command="{Binding CloseCommand}"/>
         <Button Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Margin="180,0,10,10" Command="{Binding ApplyChangesCommand}"/>
+        <Button Content="Load kernel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="76" Margin="208,108,10,0" Command="{Binding LoadKernelCommand}"/>
+        <Button Content="Save kernel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="208,133,10,0" Command="{Binding SaveKernelCommand}"/>
     </Grid>
 </Window>

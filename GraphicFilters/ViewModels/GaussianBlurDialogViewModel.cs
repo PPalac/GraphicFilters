@@ -6,6 +6,7 @@ using System.Windows.Input;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
 using GraphicFilters.ViewModels.Filters;
+using GraphicFilters.ViewModels.Services;
 
 namespace GraphicFilters.ViewModels
 {
@@ -23,10 +24,12 @@ namespace GraphicFilters.ViewModels
         public GaussianBlurDialogViewModel(ImageModel img, Action<string> MainWindowPropChanged)
         {
             kernel = new DataTable();
+            kernel.TableName = "Kernel";
             kernelSize = 3;
             this.img = img;
-            originalBitmap = img.ImgBitmap.Clone(new Rectangle(0,0,img.ImgBitmap.Width,img.ImgBitmap.Height),img.ImgBitmap.PixelFormat);
+            originalBitmap = new Bitmap(img.ImgBitmap);
             MainWindowPropertyChanged = MainWindowPropChanged;
+
 
             for (int i = 0; i < 3; i++)
             {
@@ -84,6 +87,10 @@ namespace GraphicFilters.ViewModels
 
         public ICommand CloseCommand { get { return new RelayCommand(CloseDialog); } }
 
+        public ICommand LoadKernelCommand { get { return new RelayCommand(LoadKernel); } }
+
+        public ICommand SaveKernelCommand { get { return new RelayCommand(SaveKernel); } }
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -92,10 +99,12 @@ namespace GraphicFilters.ViewModels
         private void RunBlur()
         {
             var kernelArr = GetKernel();
+
+            img.ImgBitmap = new Bitmap(originalBitmap);
+
             var blur = new GaussianBlur(img, kernelSize, kernelArr);
             blur.WorkFinished += Blur_WorkFinished;
             blur.Run();
-
         }
 
         private void Blur_WorkFinished(object sender, EventArgs e)
@@ -115,7 +124,7 @@ namespace GraphicFilters.ViewModels
             }
 
             for (int i = 0; i < kernelSize; i++)
-            {   
+            {
                 kernel.Rows.Add(rowData);
             }
 
@@ -158,6 +167,29 @@ namespace GraphicFilters.ViewModels
             }
 
             return kernelArr;
+        }
+
+        private void SaveKernel()
+        {
+            var fileService = new FileService();
+
+            fileService.SaveKernel(kernel);
+        }
+
+        private void LoadKernel()
+        {
+            var fileService = new FileService();
+
+            var newKernel = fileService.LoadKernel();
+
+            if (newKernel == null)
+            {
+                return;
+            }
+
+            kernel = newKernel;
+
+            OnPropertyChanged("Kernel");
         }
     }
 }
