@@ -1,13 +1,13 @@
 ﻿using System.Data;
 using System.Drawing;
-using GraphicFilters.ViewModels.Services.Interfaces;
 using Microsoft.Win32;
 
 namespace GraphicFilters.ViewModels.Services
 {
-    public class FileService : IFileService
+    public class FileService
     {
-        private Bitmap SourceImage;
+        private Bitmap sourceImage;
+
         public Bitmap OpenImage()
         {
             var filepicker = new OpenFileDialog()
@@ -22,8 +22,8 @@ namespace GraphicFilters.ViewModels.Services
                 return null;
             }
 
-            SourceImage = new Bitmap(filepicker.FileName);
-            return SourceImage;
+            sourceImage = new Bitmap(filepicker.FileName);
+            return sourceImage;
         }
 
         public void SaveKernel(DataTable kernel)

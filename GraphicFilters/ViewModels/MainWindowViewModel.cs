@@ -4,25 +4,21 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
-using GraphicFilters.ViewModels.Filters;
 using GraphicFilters.ViewModels.Services;
-using GraphicFilters.ViewModels.Services.Interfaces;
 using GraphicFilters.Views.Dialogs;
 
 namespace GraphicFilters.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        IFileService fileService;
         private ImageModel img;
-
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public MainWindowViewModel()
         {
-            fileService = new FileService();
             img = new ImageModel();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public BitmapSource SourceImage
         {
@@ -49,7 +45,9 @@ namespace GraphicFilters.ViewModels
 
         private void OpenImage()
         {
+            var fileService = new FileService();
             var bitmap = fileService.OpenImage();
+
             if (bitmap == null)
             {
                 return;

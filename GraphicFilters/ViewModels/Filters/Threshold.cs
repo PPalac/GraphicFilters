@@ -67,7 +67,7 @@ namespace GraphicFilters.ViewModels.Filters
                     }
                     else
                     {
-                        pixelArray[x / bytesPerPixel, y] = pixelArray[x / bytesPerPixel - 1, y] + sum;
+                        pixelArray[x / bytesPerPixel, y] = pixelArray[(x / bytesPerPixel) - 1, y] + sum;
                     }
                 }
             }
@@ -78,11 +78,11 @@ namespace GraphicFilters.ViewModels.Filters
 
                 for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                 {
-                    x1 = x / bytesPerPixel - windowSize / 2;
-                    x2 = x / bytesPerPixel + windowSize / 2;
+                    x1 = (x / bytesPerPixel) - (windowSize / 2);
+                    x2 = (x / bytesPerPixel) + (windowSize / 2);
                     x3 = x1 - 1;
-                    y1 = y - windowSize / 2;
-                    y2 = y + windowSize / 2;
+                    y1 = y - (windowSize / 2);
+                    y2 = y + (windowSize / 2);
                     y3 = y1 - 1;
 
                     if (x2 >= imgBitmap.Width)

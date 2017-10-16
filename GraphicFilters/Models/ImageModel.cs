@@ -14,7 +14,8 @@ namespace GraphicFilters.Models
 
         public ImageModel(Bitmap bitmap)
         {
-            ImgBitmap = bitmap;
+            this.ImgBitmap = bitmap;
+
             SetSourceImage(bitmap);
         }
 
@@ -28,8 +29,7 @@ namespace GraphicFilters.Models
                bitmap.GetHbitmap(),
                IntPtr.Zero,
                Int32Rect.Empty,
-               BitmapSizeOptions.FromEmptyOptions()
-               );
+               BitmapSizeOptions.FromEmptyOptions());
         }
     }
 }

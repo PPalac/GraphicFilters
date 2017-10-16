@@ -7,7 +7,7 @@ using GraphicFilters.Models;
 
 namespace GraphicFilters.ViewModels.Filters
 {
-    class GaussianBlur
+    public class GaussianBlur
     {
         private Bitmap imgBitmap;
         private Bitmap outImgBitmap;
@@ -26,21 +26,22 @@ namespace GraphicFilters.ViewModels.Filters
         private float[] kernelArr;
         private object syncObject = new object();
 
-        public event EventHandler WorkFinished;
 
         public GaussianBlur(ImageModel img, int kernelSize, float[] kernel)
         {
-            imgModel = img;
+            this.imgModel = img;
             this.kernelSize = kernelSize;
-            kernelArr = kernel;
-            imgBitmap = imgModel.ImgBitmap;
-            red = new byte[imgBitmap.Width, imgBitmap.Height];
-            green = new byte[imgBitmap.Width, imgBitmap.Height];
-            blue = new byte[imgBitmap.Width, imgBitmap.Height];
-            outImgBitmap = img.ImgBitmap;
+            this.kernelArr = kernel;
+            this.imgBitmap = imgModel.ImgBitmap;
+            this.red = new byte[imgBitmap.Width, imgBitmap.Height];
+            this.green = new byte[imgBitmap.Width, imgBitmap.Height];
+            this.blue = new byte[imgBitmap.Width, imgBitmap.Height];
+            this.outImgBitmap = img.ImgBitmap;
 
             SetUpBackgroundWorkers();
         }
+
+        public event EventHandler WorkFinished;
 
         protected virtual void OnWorkFinished(EventArgs e)
         {
@@ -186,7 +187,7 @@ namespace GraphicFilters.ViewModels.Filters
                 {
                     sum = 0;
                     iterator = 0;
-                    for (int y1 = y - kernelSize / 2; y1 <= y + kernelSize / 2; y1++)
+                    for (int y1 = (y - kernelSize) / 2; y1 <= y + (kernelSize / 2); y1++)
                     {
                         if (y1 < 0)
                         {
@@ -204,7 +205,7 @@ namespace GraphicFilters.ViewModels.Filters
                             }
                         }
 
-                        for (int x1 = x - kernelSize / 2; x1 <= x + kernelSize / 2; x1++)
+                        for (int x1 = x - (kernelSize / 2); x1 <= x + (kernelSize / 2); x1++)
                         {
                             if (x1 < 0)
                             {

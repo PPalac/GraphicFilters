@@ -12,23 +12,22 @@ namespace GraphicFilters.ViewModels
 {
     public class GaussianBlurDialogViewModel : INotifyPropertyChanged
     {
+        public Action Close;
+
         private DataTable kernel;
         private int kernelSize;
         private ImageModel img;
         private Bitmap originalBitmap;
-
         private Action<string> MainWindowPropertyChanged;
-        public Action Close;
 
-
-        public GaussianBlurDialogViewModel(ImageModel img, Action<string> MainWindowPropChanged)
+        public GaussianBlurDialogViewModel(ImageModel img, Action<string> mainWindowPropChanged)
         {
             kernel = new DataTable();
             kernel.TableName = "Kernel";
             kernelSize = 3;
             this.img = img;
             originalBitmap = new Bitmap(img.ImgBitmap);
-            MainWindowPropertyChanged = MainWindowPropChanged;
+            MainWindowPropertyChanged = mainWindowPropChanged;
 
 
             for (int i = 0; i < 3; i++)
@@ -159,7 +158,7 @@ namespace GraphicFilters.ViewModels
 
             for (int i = 0; i < columns; i++)
             {
-                foreach (var element in (kernel.Rows[i].ItemArray))
+                foreach (var element in kernel.Rows[i].ItemArray)
                 {
                     kernelArr[index] = float.Parse(element.ToString());
                     index++;

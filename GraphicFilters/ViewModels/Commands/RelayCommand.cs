@@ -5,15 +5,15 @@ namespace GraphicFilters.ViewModels.Commands
 {
     public class RelayCommand : ICommand
     {
-        private readonly Func<Boolean> canExecute;
+        private readonly Func<bool> canExecute;
         private readonly Action execute;
 
         public RelayCommand(Action execute)
-          : this(execute, ()=>true)
+          : this(execute, () => true)
         {
         }
 
-        public RelayCommand(Action execute, Func<Boolean> canExecute)
+        public RelayCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
             {
@@ -37,12 +37,12 @@ namespace GraphicFilters.ViewModels.Commands
             }
         }
 
-        public Boolean CanExecute(Object parameter)
+        public bool CanExecute(object parameter)
         {
             return canExecute == null ? true : canExecute();
         }
 
-        public void Execute(Object parameter)
+        public void Execute(object parameter)
         {
             execute();
         }

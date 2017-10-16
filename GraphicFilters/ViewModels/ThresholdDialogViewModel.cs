@@ -10,17 +10,17 @@ namespace GraphicFilters.ViewModels
 {
     public class ThresholdDialogViewModel : INotifyPropertyChanged
     {
-        private int percentage, windowSize;
-        private ImageModel img;
-        private Action<String> MainWindowPropChanged;
-        private Bitmap bitmap;
-
         public Action Close;
 
-        public ThresholdDialogViewModel(ImageModel imgModel, Action<String>Changed)
+        private int percentage, windowSize;
+        private ImageModel img;
+        private Action<string> MainWindowPropChanged;
+        private Bitmap bitmap;
+
+        public ThresholdDialogViewModel(ImageModel imgModel, Action<string> changed)
         {
             img = imgModel;
-            MainWindowPropChanged = Changed;
+            MainWindowPropChanged = changed;
             windowSize = 3;
         }
 
@@ -72,12 +72,12 @@ namespace GraphicFilters.ViewModels
         private void DiscardChanges()
         {
             img.SetSourceImage(img.ImgBitmap);
-            MainWindowPropChanged.Invoke("SourceImage"); 
+            MainWindowPropChanged.Invoke("SourceImage");
         }
 
         private void Save()
         {
-            if(bitmap == null)
+            if (bitmap == null)
             {
                 bitmap = img.ImgBitmap;
             }

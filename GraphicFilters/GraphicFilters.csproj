@@ -94,7 +94,6 @@
     <Compile Include="ViewModels\GaussianBlurDialogViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Services\FileService.cs" />
-    <Compile Include="ViewModels\Services\Interfaces\IFileService.cs" />
     <Compile Include="ViewModels\ThresholdDialogViewModel.cs" />
     <Compile Include="Views\Dialogs\GaussianBlurDialog.xaml.cs">
       <DependentUpon>GaussianBlurDialog.xaml</DependentUpon>
