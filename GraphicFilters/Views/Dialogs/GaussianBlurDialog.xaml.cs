@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace GraphicFilters.Views.Dialogs
 {
@@ -11,6 +12,14 @@ namespace GraphicFilters.Views.Dialogs
         {
             InitializeComponent();
             this.SizeToContent = SizeToContent.WidthAndHeight;
+        }
+
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                KernelInput.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+            }
         }
     }
 }
