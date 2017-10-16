@@ -28,7 +28,12 @@ namespace GraphicFilters.ViewModels.Services
 
         public void SaveKernel(DataTable kernel)
         {
-            var fileDialog = new SaveFileDialog();
+            var fileDialog = new SaveFileDialog()
+            {
+                Filter = "Graphic Filters Kernel (*.gf)| *.gf",
+                AddExtension = true,
+                DefaultExt = "gf"
+            };
 
             fileDialog.ShowDialog();
 
@@ -37,8 +42,8 @@ namespace GraphicFilters.ViewModels.Services
                 return;
             }
 
-            kernel.WriteXmlSchema(fileDialog.FileName + ".gfs");
-            kernel.WriteXml(fileDialog.FileName + ".gf", XmlWriteMode.IgnoreSchema);
+            kernel.WriteXmlSchema(fileDialog.FileName + "s");
+            kernel.WriteXml(fileDialog.FileName, XmlWriteMode.IgnoreSchema);
         }
 
         public DataTable LoadKernel()
@@ -56,6 +61,7 @@ namespace GraphicFilters.ViewModels.Services
             }
 
             DataTable kernel = new DataTable();
+            kernel.Reset();
 
             kernel.ReadXmlSchema(filePicker.FileName + "s");
             kernel.ReadXml(filePicker.FileName);

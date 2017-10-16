@@ -23,7 +23,6 @@ namespace GraphicFilters.ViewModels
         public GaussianBlurDialogViewModel(ImageModel img, Action<string> mainWindowPropChanged)
         {
             kernel = new DataTable();
-            kernel.TableName = "Kernel";
             kernelSize = 3;
             this.img = img;
             originalBitmap = new Bitmap(img.ImgBitmap);
@@ -172,6 +171,8 @@ namespace GraphicFilters.ViewModels
         {
             var fileService = new FileService();
 
+            kernel.TableName = "Kernel";
+
             fileService.SaveKernel(kernel);
         }
 
@@ -187,8 +188,10 @@ namespace GraphicFilters.ViewModels
             }
 
             kernel = newKernel;
+            kernelSize = kernel.Columns.Count;
 
             OnPropertyChanged("Kernel");
+            OnPropertyChanged("KernelSize");
         }
     }
 }
