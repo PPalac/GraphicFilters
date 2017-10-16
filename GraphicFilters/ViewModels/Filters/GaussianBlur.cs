@@ -174,7 +174,7 @@ namespace GraphicFilters.ViewModels.Filters
             int kernelX = 0;
             int kernelY = 0;
             byte[,] outPixels = new byte[width, height];
-            int iterator = 0;
+            int iterator;
 
             foreach (var element in kernelArr)
             {
@@ -187,7 +187,7 @@ namespace GraphicFilters.ViewModels.Filters
                 {
                     sum = 0;
                     iterator = 0;
-                    for (int y1 = (y - kernelSize) / 2; y1 <= y + (kernelSize / 2); y1++)
+                    for (int y1 = y - (kernelSize / 2); y1 <= y + (kernelSize / 2); y1++)
                     {
                         if (y1 < 0)
                         {
