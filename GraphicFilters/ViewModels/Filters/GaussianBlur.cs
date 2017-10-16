@@ -147,9 +147,16 @@ namespace GraphicFilters.ViewModels.Filters
                 int currentLine = y * bitmapData.Stride;
                 for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                 {
-                    blue[currentWidthInPixels, y] = pixels[currentLine + x];
-                    green[currentWidthInPixels, y] = pixels[currentLine + x + 1];
-                    red[currentWidthInPixels, y] = pixels[currentLine + x + 2];
+                    if (bytesPerPixel == 1)
+                    {
+                        blue[currentWidthInPixels, y] = green[currentWidthInPixels, y] = red[currentWidthInPixels, y] = pixels[currentLine + x];
+                    }
+                    else
+                    {
+                        blue[currentWidthInPixels, y] = pixels[currentLine + x];
+                        green[currentWidthInPixels, y] = pixels[currentLine + x + 1];
+                        red[currentWidthInPixels, y] = pixels[currentLine + x + 2];
+                    }
                     currentWidthInPixels++;
                 }
             }
@@ -248,9 +255,16 @@ namespace GraphicFilters.ViewModels.Filters
 
                 for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                 {
-                    pixels[currentLine + x] = bluredBluePixels[currentWidthInPixels, y];
-                    pixels[currentLine + x + 1] = bluredGreenPixels[currentWidthInPixels, y];
-                    pixels[currentLine + x + 2] = bluredRedPixels[currentWidthInPixels, y];
+                    if (bytesPerPixel == 1)
+                    {
+                        pixels[currentLine + x] = bluredBluePixels[currentWidthInPixels, y];
+                    }
+                    else
+                    {
+                        pixels[currentLine + x] = bluredBluePixels[currentWidthInPixels, y];
+                        pixels[currentLine + x + 1] = bluredGreenPixels[currentWidthInPixels, y];
+                        pixels[currentLine + x + 2] = bluredRedPixels[currentWidthInPixels, y];
+                    }
 
                     currentWidthInPixels++;
                 }

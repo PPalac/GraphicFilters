@@ -24,7 +24,7 @@ namespace GraphicFilters.ViewModels.Filters
             float sum;
             int x1, x2, x3, y1, y2, y3, count;
 
-            Bitmap outBitmap = imgBitmap.Clone(new Rectangle(0,0,imgBitmap.Width, imgBitmap.Height),imgBitmap.PixelFormat);
+            Bitmap outBitmap = imgBitmap.Clone(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), imgBitmap.PixelFormat);
 
             BitmapData outBitmapData = outBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
             BitmapData bitmapData = imgBitmap.LockBits(new Rectangle(0, 0, imgBitmap.Width, imgBitmap.Height), ImageLockMode.ReadWrite, imgBitmap.PixelFormat);
@@ -41,6 +41,7 @@ namespace GraphicFilters.ViewModels.Filters
             Marshal.Copy(ptrFirstOutPixel, outPixels, 0, outPixels.Length);
             int heightInPixels = bitmapData.Height;
             int widthInBytes = bitmapData.Width * bytesPerPixel;
+            Color cl;
 
             for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
             {
@@ -50,7 +51,14 @@ namespace GraphicFilters.ViewModels.Filters
                 {
                     int currentLine = y * bitmapData.Stride;
 
-                    Color cl = Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
+                    if (bytesPerPixel == 1)
+                    {
+                        cl = Color.FromArgb(pixels[currentLine + x], pixels[currentLine + x], pixels[currentLine + x]);
+                    }
+                    else
+                    {
+                        cl = Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]);
+                    }
                     sum += cl.GetBrightness();
 
                     if (x == 0)
@@ -100,17 +108,31 @@ namespace GraphicFilters.ViewModels.Filters
                     count = (x2 - x1) * (y2 - y1);
                     sum = pixelArray[x2, y2] - pixelArray[x2, y3] - pixelArray[x3, y2] + pixelArray[x3, y3];
 
-                    if ((Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]).GetBrightness() * count) < (sum * (100 - percentage) / 100))
+                    if (bytesPerPixel == 1)
                     {
-                        outPixels[currentLine + x] = 0;
-                        outPixels[currentLine + x + 1] = 0;
-                        outPixels[currentLine + x + 2] = 0;
+                        if ((Color.FromArgb(pixels[currentLine + x], pixels[currentLine + x], pixels[currentLine + x]).GetBrightness() * count) < (sum * (100 - percentage) / 100))
+                        {
+                            outPixels[currentLine + x] = 0;
+                        }
+                        else
+                        {
+                            outPixels[currentLine + x] = 255;
+                        }
                     }
                     else
                     {
-                        outPixels[currentLine + x] = 255;
-                        outPixels[currentLine + x + 1] = 255;
-                        outPixels[currentLine + x + 2] = 255;
+                        if ((Color.FromArgb(pixels[currentLine + x + 2], pixels[currentLine + x + 1], pixels[currentLine + x]).GetBrightness() * count) < (sum * (100 - percentage) / 100))
+                        {
+                            outPixels[currentLine + x] = 0;
+                            outPixels[currentLine + x + 1] = 0;
+                            outPixels[currentLine + x + 2] = 0;
+                        }
+                        else
+                        {
+                            outPixels[currentLine + x] = 255;
+                            outPixels[currentLine + x + 1] = 255;
+                            outPixels[currentLine + x + 2] = 255;
+                        }
                     }
                 }
             }
