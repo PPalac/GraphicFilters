@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Input;
 using GraphicFilters.Models;
 using GraphicFilters.ViewModels.Commands;
@@ -12,8 +13,11 @@ namespace GraphicFilters.ViewModels
 {
     public class GaussianBlurDialogViewModel : INotifyPropertyChanged
     {
+        private const byte DEFAULTKERNELSIZE = 3;
+
         public Action Close;
 
+        private bool isFilterExecuting = false;
         private DataTable kernel;
         private int kernelSize;
         private ImageModel img;
@@ -23,20 +27,22 @@ namespace GraphicFilters.ViewModels
         public GaussianBlurDialogViewModel(ImageModel img, Action<string> mainWindowPropChanged)
         {
             kernel = new DataTable();
-            kernelSize = 3;
+            kernelSize = DEFAULTKERNELSIZE;
             this.img = img;
             originalBitmap = new Bitmap(img.ImgBitmap);
             MainWindowPropertyChanged = mainWindowPropChanged;
 
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < DEFAULTKERNELSIZE; i++)
             {
                 kernel.Columns.Add();
             }
 
-            for (int i = 0; i < 3; i++)
+            var rowData = Enumerable.Repeat<object>("1", DEFAULTKERNELSIZE).ToArray();
+
+            for (int i = 0; i < DEFAULTKERNELSIZE; i++)
             {
-                kernel.Rows.Add(new object[] { "1", "1", "1" });
+                kernel.Rows.Add(rowData);
             }
         }
 
@@ -77,13 +83,13 @@ namespace GraphicFilters.ViewModels
             }
         }
 
-        public ICommand ApplyChangesCommand { get { return new RelayCommand(RunBlur); } }
+        public ICommand ApplyChangesCommand { get { return new RelayCommand(RunBlur, () => !isFilterExecuting); } }
 
         public ICommand DiscardChangesCommand { get { return new RelayCommand(DiscardChanges); } }
 
-        public ICommand SaveCommand { get { return new RelayCommand(Save); } }
+        public ICommand SaveCommand { get { return new RelayCommand(Save, () => !isFilterExecuting); } }
 
-        public ICommand CloseCommand { get { return new RelayCommand(CloseDialog); } }
+        public ICommand CloseCommand { get { return new RelayCommand(CloseDialog, () => !isFilterExecuting); } }
 
         public ICommand LoadKernelCommand { get { return new RelayCommand(LoadKernel); } }
 
@@ -96,6 +102,8 @@ namespace GraphicFilters.ViewModels
 
         private void RunBlur()
         {
+            isFilterExecuting = true;
+
             var kernelArr = GetKernel();
 
             img.ImgBitmap = new Bitmap(originalBitmap);
@@ -108,6 +116,9 @@ namespace GraphicFilters.ViewModels
         private void Blur_WorkFinished(object sender, EventArgs e)
         {
             MainWindowPropertyChanged.Invoke("SourceImage");
+            isFilterExecuting = false;
+
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void OnKernelSizeChanged()
@@ -126,7 +137,7 @@ namespace GraphicFilters.ViewModels
                 kernel.Rows.Add(rowData);
             }
 
-            OnPropertyChanged("Kernel");
+            OnPropertyChanged(nameof(Kernel));
         }
 
         private void DiscardChanges()

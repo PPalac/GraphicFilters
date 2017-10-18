@@ -10,18 +10,21 @@ namespace GraphicFilters.ViewModels
 {
     public class ThresholdDialogViewModel : INotifyPropertyChanged
     {
+        private const byte DEFAULTWINDOWSIZE = 3;
+
         public Action Close;
 
         private int percentage, windowSize;
         private ImageModel img;
         private Action<string> MainWindowPropChanged;
         private Bitmap bitmap;
+        private bool isFilterExecuting = false;
 
         public ThresholdDialogViewModel(ImageModel imgModel, Action<string> changed)
         {
             img = imgModel;
             MainWindowPropChanged = changed;
-            windowSize = 3;
+            windowSize = DEFAULTWINDOWSIZE;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -46,7 +49,7 @@ namespace GraphicFilters.ViewModels
             }
         }
 
-        public ICommand ApplyChangesCommand { get { return new RelayCommand(RunThreshold); } }
+        public ICommand ApplyChangesCommand { get { return new RelayCommand(RunThreshold, () => !isFilterExecuting); } }
 
         public ICommand DiscardChangesCommand { get { return new RelayCommand(DiscardChanges); } }
 
@@ -61,12 +64,16 @@ namespace GraphicFilters.ViewModels
 
         private void RunThreshold()
         {
+            isFilterExecuting = true;
+
             var threshold = new Threshold(img.ImgBitmap, windowSize, percentage);
             bitmap = threshold.Run();
 
             img.SetSourceImage(bitmap);
 
             MainWindowPropChanged.Invoke("SourceImage");
+
+            isFilterExecuting = false;
         }
 
         private void DiscardChanges()
