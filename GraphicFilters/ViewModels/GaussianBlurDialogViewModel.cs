@@ -201,8 +201,8 @@ namespace GraphicFilters.ViewModels
             kernel = newKernel;
             kernelSize = kernel.Columns.Count;
 
-            OnPropertyChanged("Kernel");
-            OnPropertyChanged("KernelSize");
+            OnPropertyChanged(nameof(Kernel));
+            OnPropertyChanged(nameof(KernelSize));
         }
     }
 }

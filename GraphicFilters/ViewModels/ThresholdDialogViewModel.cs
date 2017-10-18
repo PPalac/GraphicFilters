@@ -35,7 +35,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 percentage = value;
-                OnPropertyChanged("Percentage");
+                OnPropertyChanged(nameof(Percentage));
             }
         }
 
@@ -45,7 +45,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 windowSize = value;
-                OnPropertyChanged("WindowSize");
+                OnPropertyChanged(nameof(WindowSize));
             }
         }
 

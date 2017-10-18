@@ -26,7 +26,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 img.SourceImage = value;
-                OnPropertyChanged("SourceImage");
+                OnPropertyChanged(nameof(SourceImage));
             }
         }
 
@@ -54,7 +54,7 @@ namespace GraphicFilters.ViewModels
             }
 
             img = new ImageModel(bitmap);
-            OnPropertyChanged("SourceImage");
+            OnPropertyChanged(nameof(SourceImage));
         }
 
         private void OpenThresholdDialog()
@@ -98,7 +98,7 @@ namespace GraphicFilters.ViewModels
         private void SetBitmap(Bitmap map)
         {
             img.SetSourceImage(map);
-            OnPropertyChanged("SourceImage");
+            OnPropertyChanged(nameof(SourceImage));
         }
     }
 }
