@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace GraphicFilters.ViewModels.Commands
+namespace GraphicFilters.Commands
 {
     public class RelayCommand : ICommand
     {

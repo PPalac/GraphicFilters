@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Input;
 using GraphicFilters.Models;
-using GraphicFilters.ViewModels.Commands;
-using GraphicFilters.ViewModels.Filters;
+using GraphicFilters.Commands;
+using GraphicFilters.Filters;
 
 namespace GraphicFilters.ViewModels
 {

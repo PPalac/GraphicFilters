@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Input;
 using GraphicFilters.Models;
-using GraphicFilters.ViewModels.Commands;
-using GraphicFilters.ViewModels.Filters;
-using GraphicFilters.ViewModels.Services;
+using GraphicFilters.Commands;
+using GraphicFilters.Filters;
+using GraphicFilters.Services;
 
 namespace GraphicFilters.ViewModels
 {

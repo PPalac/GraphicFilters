@@ -2,7 +2,7 @@
 using System.Drawing;
 using Microsoft.Win32;
 
-namespace GraphicFilters.ViewModels.Services
+namespace GraphicFilters.Services
 {
     public class FileService
     {

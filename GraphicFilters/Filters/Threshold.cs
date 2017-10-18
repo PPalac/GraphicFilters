@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace GraphicFilters.ViewModels.Filters
+namespace GraphicFilters.Filters
 {
     public class Threshold
     {

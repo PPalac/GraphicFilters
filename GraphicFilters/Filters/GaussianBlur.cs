@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using GraphicFilters.Models;
 
-namespace GraphicFilters.ViewModels.Filters
+namespace GraphicFilters.Filters
 {
     public class GaussianBlur
     {
