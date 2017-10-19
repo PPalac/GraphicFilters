@@ -32,7 +32,6 @@ namespace GraphicFilters.ViewModels
             originalBitmap = new Bitmap(img.ImgBitmap);
             MainWindowPropertyChanged = mainWindowPropChanged;
 
-
             for (int i = 0; i < DEFAULTKERNELSIZE; i++)
             {
                 kernel.Columns.Add();
