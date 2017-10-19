@@ -146,6 +146,7 @@ namespace GraphicFilters.Filters
             {
                 currentWidthInPixels = 0;
                 int currentLine = y * bitmapData.Stride;
+
                 for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
                 {
                     if (bytesPerPixel == 1)
@@ -158,12 +159,14 @@ namespace GraphicFilters.Filters
                         green[currentWidthInPixels, y] = pixels[currentLine + x + 1];
                         red[currentWidthInPixels, y] = pixels[currentLine + x + 2];
                     }
+
                     currentWidthInPixels++;
                 }
             }
 
             imgBitmap.UnlockBits(bitmapData);
         }
+
         private void Blur(object sender, DoWorkEventArgs e)
         {
             byte[,] pixels = (byte[,])e.Argument;
@@ -187,6 +190,7 @@ namespace GraphicFilters.Filters
                 {
                     sum = 0;
                     iterator = 0;
+
                     for (int y1 = y - (kernelSize / 2); y1 <= y + (kernelSize / 2); y1++)
                     {
                         if (y1 < 0)

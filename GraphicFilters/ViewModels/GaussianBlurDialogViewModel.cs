@@ -53,6 +53,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 kernel = value;
+
                 OnPropertyChanged(nameof(Kernel));
             }
         }
@@ -115,6 +116,7 @@ namespace GraphicFilters.ViewModels
         private void Blur_WorkFinished(object sender, EventArgs e)
         {
             MainWindowPropertyChanged.Invoke("SourceImage");
+
             isFilterExecuting = false;
 
             CommandManager.InvalidateRequerySuggested();
@@ -143,12 +145,14 @@ namespace GraphicFilters.ViewModels
         {
             img.ImgBitmap = originalBitmap;
             img.SetSourceImage(img.ImgBitmap);
+
             MainWindowPropertyChanged.Invoke("SourceImage");
         }
 
         private void Save()
         {
             originalBitmap = img.ImgBitmap;
+
             Close.Invoke();
         }
 

@@ -26,6 +26,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 img.SourceImage = value;
+
                 OnPropertyChanged(nameof(SourceImage));
             }
         }
@@ -54,6 +55,7 @@ namespace GraphicFilters.ViewModels
             }
 
             img = new ImageModel(bitmap);
+
             OnPropertyChanged(nameof(SourceImage));
         }
 
@@ -66,6 +68,7 @@ namespace GraphicFilters.ViewModels
             };
 
             ((ThresholdDialogViewModel)thresholdDialog.DataContext).Close += thresholdDialog.Close;
+
             thresholdDialog.Show();
         }
 
@@ -78,6 +81,7 @@ namespace GraphicFilters.ViewModels
             };
 
             ((GaussianBlurDialogViewModel)gaussianBlurDialog.DataContext).Close += gaussianBlurDialog.Close;
+
             gaussianBlurDialog.Show();
         }
         private bool CanFilterExecute()
@@ -98,6 +102,7 @@ namespace GraphicFilters.ViewModels
         private void SetBitmap(Bitmap map)
         {
             img.SetSourceImage(map);
+
             OnPropertyChanged(nameof(SourceImage));
         }
     }

@@ -35,6 +35,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 percentage = value;
+
                 OnPropertyChanged(nameof(Percentage));
             }
         }
@@ -45,6 +46,7 @@ namespace GraphicFilters.ViewModels
             set
             {
                 windowSize = value;
+
                 OnPropertyChanged(nameof(WindowSize));
             }
         }
@@ -67,6 +69,7 @@ namespace GraphicFilters.ViewModels
             isFilterExecuting = true;
 
             var threshold = new Threshold(img.ImgBitmap, windowSize, percentage);
+
             bitmap = threshold.Run();
 
             img.SetSourceImage(bitmap);
@@ -79,6 +82,7 @@ namespace GraphicFilters.ViewModels
         private void DiscardChanges()
         {
             img.SetSourceImage(img.ImgBitmap);
+
             MainWindowPropChanged.Invoke("SourceImage");
         }
 
@@ -88,7 +92,9 @@ namespace GraphicFilters.ViewModels
             {
                 bitmap = img.ImgBitmap;
             }
+
             img.ImgBitmap = bitmap;
+
             Close.Invoke();
         }
 

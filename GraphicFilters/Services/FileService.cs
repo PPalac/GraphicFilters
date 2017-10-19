@@ -23,6 +23,7 @@ namespace GraphicFilters.Services
             }
 
             sourceImage = new Bitmap(filepicker.FileName);
+
             return sourceImage;
         }
 
