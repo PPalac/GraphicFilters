@@ -2,13 +2,13 @@
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-using GraphicFilters.Models;
 using GraphicFilters.Commands;
 using GraphicFilters.Filters;
+using GraphicFilters.Models;
 using GraphicFilters.Services;
-using System.Globalization;
 
 namespace GraphicFilters.ViewModels
 {

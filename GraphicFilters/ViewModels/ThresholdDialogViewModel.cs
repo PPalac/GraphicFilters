@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Input;
-using GraphicFilters.Models;
 using GraphicFilters.Commands;
 using GraphicFilters.Filters;
+using GraphicFilters.Models;
 
 namespace GraphicFilters.ViewModels
 {

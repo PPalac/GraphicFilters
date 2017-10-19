@@ -2,8 +2,8 @@
 using System.Drawing;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using GraphicFilters.Models;
 using GraphicFilters.Commands;
+using GraphicFilters.Models;
 using GraphicFilters.Services;
 using GraphicFilters.Views.Dialogs;
 
