@@ -35,7 +35,7 @@ namespace GraphicFilters.ViewModels
 
             for (int i = 0; i < DEFAULTKERNELSIZE; i++)
             {
-                kernel.Columns.Add();
+                kernel.Columns.Add("", typeof(float));
             }
 
             var rowData = Enumerable.Repeat<object>("1", DEFAULTKERNELSIZE).ToArray();
@@ -131,7 +131,7 @@ namespace GraphicFilters.ViewModels
             for (int i = 0; i < kernelSize; i++)
             {
                 rowData[i] = "1";
-                kernel.Columns.Add();
+                kernel.Columns.Add("", typeof(float));
             }
 
             for (int i = 0; i < kernelSize; i++)
