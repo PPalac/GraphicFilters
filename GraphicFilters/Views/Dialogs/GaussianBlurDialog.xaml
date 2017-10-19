@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Gaussian Blur" Height="300" Width="300" MaxHeight="600" MaxWidth="800"
         ResizeMode="NoResize" Background="#333333">
+    <Window.Icon>
+        <BitmapImage UriSource="/Data/Icons/blur-icon.png"/>
+    </Window.Icon>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding DiscardChangesCommand}"/>

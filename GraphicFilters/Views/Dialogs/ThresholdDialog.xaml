@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="Threshold" Height="300" Width="300" ResizeMode="NoResize"
         Background="#333333" Foreground="White">
+    <Window.Icon>
+        <BitmapImage UriSource="/Data/Icons/threshold-icon.png"/>
+    </Window.Icon>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding DiscardChangesCommand}"/>
