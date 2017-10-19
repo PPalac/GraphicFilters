@@ -8,6 +8,7 @@ using GraphicFilters.Models;
 using GraphicFilters.Commands;
 using GraphicFilters.Filters;
 using GraphicFilters.Services;
+using System.Globalization;
 
 namespace GraphicFilters.ViewModels
 {
@@ -173,7 +174,7 @@ namespace GraphicFilters.ViewModels
             {
                 foreach (var element in kernel.Rows[i].ItemArray)
                 {
-                    kernelArr[index] = float.Parse(element.ToString());
+                    kernelArr[index] = float.Parse(element.ToString(), CultureInfo.InvariantCulture);
                     index++;
                 }
             }
