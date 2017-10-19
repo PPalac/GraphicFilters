@@ -13,14 +13,14 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <DataGrid x:Name="KernelMatrix" ItemsSource="{Binding Kernel}" HeadersVisibility="None" AutoGenerateColumns="True"  CanUserAddRows="False" MaxColumnWidth="25" Margin="109,108,110,100" />
-        <Label Foreground="White" Content="Kernel size ( SxS ):" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,39,0,0"/>
-        <TextBox x:Name="KernelInput" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding KernelSize}" VerticalAlignment="Top" Width="45" Margin="154,43,0,0" KeyUp="TextBox_KeyUp"/>
-        <Label Foreground="White" Content="px" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="211,39,0,0"/>
-        <Button Content="Save" HorizontalAlignment="Center"  VerticalAlignment="Bottom" Width="75" Margin="-180,226,0,10" Command="{Binding SaveCommand}"/>
-        <Button Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Margin="0,226,0,10" Command="{Binding CloseCommand}"/>
-        <Button Content="Apply" HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="75" Margin="180,0,10,10" Command="{Binding ApplyChangesCommand}"/>
-        <Button Content="Load kernel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="76" Margin="208,108,10,0" Command="{Binding LoadKernelCommand}"/>
-        <Button Content="Save kernel" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="208,133,10,0" Command="{Binding SaveKernelCommand}"/>
+        <DataGrid Margin="109,108,110,100" MaxColumnWidth="25" HeadersVisibility="None" AutoGenerateColumns="True"  CanUserAddRows="False" ItemsSource="{Binding Kernel}"/>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,39,0,0" Foreground="White" Content="Kernel size ( SxS ):"/>
+        <TextBox x:Name="KernelInput" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="154,45,0,0"  Width="45" Text="{Binding KernelSize}" KeyUp="TextBox_KeyUp"/>
+        <Label  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="211,39,0,0" Foreground="White" Content="px" />
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="208,108,10,0" Width="75" Content="Load kernel" Command="{Binding LoadKernelCommand}"/>
+        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Margin="208,133,10,0" Width="75" Content="Save kernel" Command="{Binding SaveKernelCommand}"/>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="-150,0,0,20" Width="50" Content="Save" Command="{Binding SaveCommand}"/>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20" Width="50" Content="Cancel" Command="{Binding CloseCommand}"/>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="150,0,0,20" Width="50" Content="Apply" Command="{Binding ApplyChangesCommand}"/>
     </Grid>
 </Window>

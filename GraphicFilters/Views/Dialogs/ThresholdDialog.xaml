@@ -5,7 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Threshold" Height="310" Width="300" ResizeMode="NoResize"
+        Title="Threshold" Height="300" Width="300" ResizeMode="NoResize"
         Background="#333333" Foreground="White">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -13,14 +13,14 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
-        <Label Foreground="White" Margin="18,42,197,201" FontSize="12">Percentage</Label>
-        <Slider x:Name="percentage" Margin="102,47,47,201" Minimum="0" Maximum="100" Interval="1" Value="{Binding Percentage}"/>
-        <TextBlock Text="{Binding ElementName=percentage, Path=Value}" Margin="252,47,13,201"></TextBlock>
-        <Label Foreground="White" Margin="21,94,171,149">Window size</Label>
-        <TextBox x:Name="window" Margin="139,99,120,152" Text="{Binding WindowSize}"/>
-        <Label Foreground="White" FontSize="10" Margin="179,100,71,149">px</Label>
-        <Button x:Name="applyBtn" Margin="209,189,31,63" Command="{Binding ApplyChangesCommand}">Apply</Button>
-        <Button x:Name="cancelBtn" Margin="121,189,119,63" Command="{Binding CloseCommand}">Cancel</Button>
-        <Button x:Name="saveBtn" Margin="33,189,207,63" Command="{Binding SaveCommand}">Save</Button>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,42,0,0" Foreground="White" FontSize="12">Percentage</Label>
+        <Slider x:Name="percentage" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="100,47,0,0" Width="130" Minimum="0" Maximum="100" Interval="1" Value="{Binding Percentage}"/>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="235,48,0,0" Width="35" Text="{Binding ElementName=percentage, Path=Value, StringFormat={} {0} %}"/>
+        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="27,105,0,0" Foreground="White" Content="Window size ( SxS ):"  />
+        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="154,110,0,0" Width="45" Text="{Binding WindowSize}" />
+        <Label HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="211,105,0,0" Foreground="White" Content="px" />
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="150,0,0,30" Width="50" Command="{Binding ApplyChangesCommand}">Apply</Button>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,30" Width="50" Command="{Binding CloseCommand}">Cancel</Button>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="-150,0,0,30" Width="50" Command="{Binding SaveCommand}">Save</Button>
     </Grid>
 </Window>
