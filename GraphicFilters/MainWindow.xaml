@@ -33,11 +33,11 @@
                 </MenuItem>
                 <MenuItem Header="Gaussian Blur" Foreground="Black" Command="{Binding GaussianBlurCommand}">
                     <MenuItem.Icon>
-                        <Image Source="Data/Icons/blur-icon.png" Width="15" Height="15"/>
+                        <Image Source="Data/Icons/blur-icon.png" Width="20" Height="20"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <Image  VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>
+        <Image HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform" MaxHeight="{Binding SourceImage.PixelHeight}" Source="{Binding SourceImage, Mode=TwoWay}" Margin="10,18,10,10"/>
     </Grid>
 </Window>
